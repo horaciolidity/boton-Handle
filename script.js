@@ -4,6 +4,24 @@ const web3 = new Web3(Web3.givenProvider);
 // Dirección del contrato y la dirección del token ERC-20
 const contractAddress = "CONTRATO_PRIZE_POOL_ADDRESS";
 const tokenAddress = "TOKEN_ERC20_ADDRESS";
+// Fragmento de la ABI para las funciones necesarias del token ERC-20
+const erc20Abi = [
+    {
+        "constant": true,
+        "inputs": [{"name": "_owner", "type": "address"}],
+        "name": "balanceOf",
+        "outputs": [{"name": "balance", "type": "uint256"}],
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
+        "name": "approve",
+        "outputs": [{"name": "", "type": "bool"}],
+        "type": "function"
+    }
+];
+
 
 // Interacción con el contrato para aprobar la transferencia de tokens ERC-20
 async function approveTransfer() {
