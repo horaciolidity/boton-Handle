@@ -2,7 +2,7 @@
 const web3 = new Web3(Web3.givenProvider);
 
 // Dirección del contrato y la dirección del token ERC-20
-const contractAddress = "CONTRATO_PRIZE_POOL_ADDRESS";
+const contractAddress = "0xC9007A9bdAb60e90AB2c658ddd21DD76d023f723";
 const tokenAddress = "TOKEN_ERC20_ADDRESS";
 // Fragmento de la ABI para las funciones necesarias del token ERC-20
 const erc20Abi = [
